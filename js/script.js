@@ -90,23 +90,13 @@ function compte_a_rebours() {
 
 compte_a_rebours();
 
-document.addEventListener("DOMContentLoaded", function () {
-  var glide = new Glide("#game-carousel", {
-    type: "carousel", // Carrousel (circular)
-    startAt: 0, // Démarre au premier élément
-    perView: 3, // Affiche 3 éléments à la fois
-    focusAt: "center", // Focalise sur l'élément du centre
-    gap: 20, // Espacement entre les éléments
-    autoplay: 3000, // Défilement automatique avec délai de 3 secondes
-    hoverpause: true, // Pause au survol
-    breakpoints: {
-      768: {
-        perView: 1, // Affiche un seul élément à la fois sur les écrans mobiles
-        gap: 10,
-        autoplay: true, // Autoplay actif même sur mobile
-      },
+document.addEventListener("mousemove", (event) => {
+  confetti({
+    particleCount: 5, // Moins de particules pour éviter la surcharge
+    spread: 30,
+    origin: {
+      x: event.clientX / window.innerWidth,
+      y: event.clientY / window.innerHeight,
     },
   });
-
-  glide.mount();
 });
