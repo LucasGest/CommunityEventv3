@@ -1,11 +1,12 @@
 :root {
-  --primary-color: #a8e6cf;
-  --second-one-color: #b7c9d4;
-  --second-two-color: #c3d6dc;
-  --bg-color: #fefbf6;
-
   --font-title: "Poppins", serif;
   --font-paragraph: "Roboto", serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 p,
@@ -18,14 +19,44 @@ a {
   font-family: var(--font-title);
 }
 
-* {
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: white;
+  overflow: hidden;
 }
 
-body {
-  overflow: hidden;
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  transition: transform 0.2s ease;
+}
+
+.like-btn:hover {
+  transform: scale(1.2);
+}
+
+.like-btn.liked {
+  transform: scale(1.5);
+  transition: transform 0.2s ease, color 0.2s ease;
+  color: #ff7ba9;
+}
+
+.like-count {
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
 }
 
 #compte_a_rebours {
@@ -38,7 +69,6 @@ body {
 
 #presentation {
   text-align: center;
-  padding: 50px 20px;
 }
 
 #presentation h1 {
