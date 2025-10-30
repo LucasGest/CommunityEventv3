@@ -6,7 +6,6 @@
     <title>Community Event | Site en construction</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" href="img/travaux.svg" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,10 +19,80 @@
       <div id="compte_a_rebours"></div>
     </div>
 
+    <div class="like-container">
+      <p>Likez</p>
+      <button id="likeBtn" class="like-btn">❤️</button>
+      <span id="likeCount" class="like-count">0</span>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+        set,
+        runTransaction,
+      } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCU7s7ypbRbhw6tNRo_UpTMYrlutv6U-bA",
+        authDomain: "communityevent-3197a.firebaseapp.com",
+        databaseURL:
+          "https://communityevent-3197a-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "communityevent-3197a",
+        storageBucket: "communityevent-3197a.firebasestorage.app",
+        messagingSenderId: "116519039463",
+        appId: "1:116519039463:web:a037ee9c2c45b4b8020d42",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      // Référence vers ton compteur global
+      const likeRef = ref(db, "likes/count");
+
+      const likeBtn = document.getElementById("likeBtn");
+      const likeCount = document.getElementById("likeCount");
+
+      // Charger le compteur au démarrage
+      async function loadLikes() {
+        const snapshot = await get(likeRef);
+        if (snapshot.exists()) {
+          likeCount.textContent = snapshot.val();
+        } else {
+          await set(likeRef, 0);
+          likeCount.textContent = 0;
+        }
+      }
+
+      // Ajouter un like
+      function addLike() {
+        runTransaction(likeRef, (currentValue) => {
+          return (currentValue || 0) + 1;
+        })
+          .then(() => {
+            likeBtn.classList.add("liked");
+            setTimeout(() => likeBtn.classList.remove("liked"), 300);
+          })
+          .catch((err) => console.error("Erreur transaction :", err));
+      }
+
+      // Écoute les changements en temps réel (si d'autres like en même temps)
+      import { onValue } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+      onValue(likeRef, (snapshot) => {
+        likeCount.textContent = snapshot.val() ?? 0;
+      });
+
+      // Initialisation
+      loadLikes();
+      likeBtn.addEventListener("click", addLike);
+    </script>
+
     <script>
       document.addEventListener("mousemove", (event) => {
         confetti({
-          particleCount: 5, // Moins de particules pour éviter la surcharge
+          particleCount: 5,
           spread: 30,
           origin: {
             x: event.clientX / window.innerWidth,
@@ -33,5 +102,4 @@
       });
     </script>
   </body>
-  <script src="js/script.js"></script>
 </html>
